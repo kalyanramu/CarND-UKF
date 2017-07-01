@@ -129,7 +129,9 @@ int main()
     	  
     	  estimations.push_back(estimate);
 
+        cout << "Current State Estimate: "<< estimate << endl;
     	  VectorXd RMSE = tools.CalculateRMSE(estimations, ground_truth);
+
 
           json msgJson;
           msgJson["estimate_x"] = p_x;

@@ -32,7 +32,7 @@ public:
   MatrixXd Xsig_pred_;
 
   ///* time when the state is true, in us
-  long long time_us_;
+  long long prev_timestamp_us_;
 
   ///* Process noise standard deviation longitudinal acceleration in m/s^2
   double std_a_;
@@ -69,6 +69,11 @@ public:
 
   //Adding R_radar_, R_lidar_
   MatrixXd R_radar_, R_lidar_;
+  //MatrixXd S_radar_, S_lidar_;
+  //MatrixXd Tc_radar_, Tc_lidar_;
+
+  //Adding n_sigpts_;
+  int n_sigpts_;
 
 
   /**
@@ -105,6 +110,15 @@ public:
    * @param meas_package The measurement at k+1
    */
   void UpdateRadar(MeasurementPackage meas_package);
+
+
+  /**
+   * Computes S and T Matrices
+   * Update state using S and T matrices
+   */
+  void compute_SandT_UpdateState(MatrixXd Zsig, VectorXd z,MeasurementPackage meas_package);
+  void UpdateState_from_SnT(MatrixXd S, MatrixXd Tc, VectorXd zmean_diff);
+
 };
 
 #endif /* UKF_H */

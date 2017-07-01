@@ -1,5 +1,8 @@
 {
     "files.associations": {
-        "dense": "cpp"
+        "dense": "cpp",
+        "geometry": "cpp",
+        "cmakeccompilerid.c": "cpp",
+        "iostream": "cpp"
     }
 }
