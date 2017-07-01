@@ -26,10 +26,10 @@ UKF::UKF() {
   P_ = MatrixXd(5, 5);
 
   // Process noise standard deviation longitudinal acceleration in m/s^2
-  std_a_ = 30;
+  std_a_ = 10; //30
 
   // Process noise standard deviation yaw acceleration in rad/s^2
-  std_yawdd_ = 30;
+  std_yawdd_ = 10; //30
 
   // Laser measurement noise standard deviation position1 in m
   std_laspx_ = 0.15;
@@ -186,7 +186,7 @@ void UKF::Prediction(double delta_t) {
   
   //init augmented mean state
   x_aug.head(n_x_) = x_;
-  cout << "Augumented Mean State " << x_aug << endl;
+  //cout << "Augumented Mean State " << x_aug << endl;
 
   //init augmented covariance matrix
   P_aug.topLeftCorner(5,5) = P_;
@@ -262,11 +262,11 @@ void UKF::Prediction(double delta_t) {
     //cout << "x" << endl << x_ << endl;
     x_diff = (Xsig_pred_.col(i)-x_);
     x_diff(3) = tools.NormalizedAngle(x_diff(3));
-    cout << "x_diff" << endl << x_diff << endl;
+    //cout << "x_diff" << endl << x_diff << endl;
     P_ += weights_(i)*x_diff*x_diff.transpose();
   }
 
-  cout << "P matrix: " << endl << P_ << endl;
+  //cout << "P matrix: " << endl << P_ << endl;
 }
 
 /**
@@ -372,7 +372,7 @@ void UKF::compute_SandT_UpdateState(MatrixXd Zsig, VectorXd z,MeasurementPackage
       zmean_pred = zmean_pred + weights_(i) * Zsig.col(i);
   }
 
-  cout << "Current Mean Predicted State" << endl << zmean_pred << endl;
+  //cout << "Current Mean Predicted State" << endl << zmean_pred << endl;
   //Get current state
   VectorXd x = x_;
 
@@ -396,7 +396,7 @@ void UKF::compute_SandT_UpdateState(MatrixXd Zsig, VectorXd z,MeasurementPackage
     S = S + weights_(i) * z_diff * z_diff.transpose();
   }
 
-  cout << "S Matrix: " << endl << S << endl;
+  //cout << "S Matrix: " << endl << S << endl;
 
   //add measurement noise covariance matrix
   if (meas_package.sensor_type_ == MeasurementPackage::RADAR){
@@ -433,7 +433,7 @@ void UKF::compute_SandT_UpdateState(MatrixXd Zsig, VectorXd z,MeasurementPackage
 
     Tc = Tc + weights_(i) * x_diff * z_diff.transpose();
   }
-  cout << "Tc Matrix: " << endl << Tc << endl;
+  //cout << "Tc Matrix: " << endl << Tc << endl;
 
   /******************************************************************************
   * Update State using S and T matrices
@@ -455,5 +455,8 @@ void UKF::UpdateState_from_SnT(MatrixXd S, MatrixXd Tc, VectorXd zmean_diff)
   //update state mean and covariance matrix
   x_ = x_ + K * zmean_diff;
   P_ = P_ - K*S*K.transpose();
+
+  cout << "x ="  << endl << x_ << endl;
+  cout << "P = " << endl << P_ << endl;
 
 }
